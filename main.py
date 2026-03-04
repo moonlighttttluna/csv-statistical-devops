@@ -1,4 +1,9 @@
-```python
+
+---
+
+# ✅ Correct `main.py` (Paste this exactly)
+
+:::writing{variant="standard" id="58314"}
 import os
 
 from processors.calculate_column_mean import calculate_column_mean
@@ -40,4 +45,9 @@ for file in os.listdir(INPUT_FOLDER):
         print(f"{file} processed successfully.")
 
 print("All CSV files processed.")
-```
+:::
+
+---
+
+# ⚠️ Important
+Your `main.py` should **start directly with**
