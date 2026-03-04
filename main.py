@@ -1,4 +1,6 @@
+```python
 import os
+
 from processors.calculate_column_mean import calculate_column_mean
 from processors.calculate_column_median import calculate_column_median
 from processors.calculate_column_std_dev import calculate_column_std_dev
@@ -11,9 +13,17 @@ OUTPUT_FOLDER = "output"
 # Create output folder if it does not exist
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
+# Check if input folder exists
+if not os.path.exists(INPUT_FOLDER):
+    print("Input folder not found.")
+    exit()
+
+# Process CSV files
 for file in os.listdir(INPUT_FOLDER):
     if file.endswith(".csv"):
         file_path = os.path.join(INPUT_FOLDER, file)
+
+        print(f"Processing {file}...")
 
         mean = calculate_column_mean(file_path)
         median = calculate_column_median(file_path)
@@ -27,4 +37,7 @@ for file in os.listdir(INPUT_FOLDER):
         summary.to_csv(f"{OUTPUT_FOLDER}/summary_{file}")
         correlation.to_csv(f"{OUTPUT_FOLDER}/correlation_{file}")
 
-print("CSV files processed successfully.")
+        print(f"{file} processed successfully.")
+
+print("All CSV files processed.")
+```
