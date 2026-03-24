@@ -1,17 +1,14 @@
-name: Python Data Pipeline with Auto-Commit
+name: Python Data Pipeline with Testing
 
 on:
   push:
     branches: [ "main" ]
-    # This prevents an "infinite loop" where the bot's own commit 
-    # triggers another build.
     paths-ignore:
-      - 'output/**'
+      - 'output/**' # Prevents infinite loops
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # We need "write" permissions to push files back to the repo
     permissions:
       contents: write
 
@@ -28,6 +25,12 @@ jobs:
       run: |
         pip install pandas pytest
 
+    - name: Run Tests
+      # THIS IS THE PART YOU WERE MISSING
+      run: |
+        export PYTHONPATH=$PYTHONPATH:$(pwd)
+        pytest
+
     - name: Run Data Pipeline
       run: |
         export PYTHONPATH=$PYTHONPATH:$(pwd)
@@ -37,14 +40,10 @@ jobs:
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        
-        # Add the output folder to git
         git add output/
-        
-        # Only commit if there are actually changes to avoid errors
         if git diff --staged --quiet; then
           echo "No changes to commit"
         else
-          git commit -m "Auto-generated: Updated statistical analysis"
+          git commit -m "Auto-update: Statistical results"
           git push
         fi
