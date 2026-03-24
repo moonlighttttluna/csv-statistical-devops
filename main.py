@@ -28,10 +28,10 @@ for file in os.listdir(INPUT_FOLDER):
         correlation = correlation_analysis(df)
 
         # Save results to output folder
-        mean.to_csv(os.path.join(OUTPUT_FOLDER, f"mean_{file}"), index=False)
-        median.to_csv(os.path.join(OUTPUT_FOLDER, f"median_{file}"), index=False)
-        std_dev.to_csv(os.path.join(OUTPUT_FOLDER, f"std_{file}"), index=False)
-        summary.to_csv(os.path.join(OUTPUT_FOLDER, f"summary_{file}"), index=False)
-        correlation.to_csv(os.path.join(OUTPUT_FOLDER, f"correlation_{file}"), index=False)
+        mean.to_csv(os.path.join(OUTPUT_FOLDER, f"mean_{file}"), index=True)
+        median.to_csv(os.path.join(OUTPUT_FOLDER, f"median_{file}"), index=True)
+        std_dev.to_csv(os.path.join(OUTPUT_FOLDER, f"std_{file}"), index=True)
+        summary.to_csv(os.path.join(OUTPUT_FOLDER, f"summary_{file}"), index=True)
+        correlation.to_csv(os.path.join(OUTPUT_FOLDER, f"correlation_{file}"), index=True)
 
 print("CSV files processed successfully.")
