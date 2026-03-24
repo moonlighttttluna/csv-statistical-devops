@@ -1,4 +1,6 @@
 import os
+import pandas as pd
+
 from processors.calculate_column_mean import calculate_column_mean
 from processors.calculate_column_median import calculate_column_median
 from processors.calculate_column_std_dev import calculate_column_std_dev
@@ -8,23 +10,50 @@ from processors.correlation_analysis import correlation_analysis
 INPUT_FOLDER = "input"
 OUTPUT_FOLDER = "output"
 
-# Create output folder if it does not exist
-os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
-for file in os.listdir(INPUT_FOLDER):
-    if file.endswith(".csv"):
-        file_path = os.path.join(INPUT_FOLDER, file)
+def process_csv(file_path):
+    filename = os.path.basename(file_path)
+    name, _ = os.path.splitext(filename)
 
-        mean = calculate_column_mean(file_path)
-        median = calculate_column_median(file_path)
-        std_dev = calculate_column_std_dev(file_path)
-        summary = generate_statistical_summary(file_path)
-        correlation = correlation_analysis(file_path)
+    df = pd.read_csv(file_path)
 
-        mean.to_csv(f"{OUTPUT_FOLDER}/mean_{file}")
-        median.to_csv(f"{OUTPUT_FOLDER}/median_{file}")
-        std_dev.to_csv(f"{OUTPUT_FOLDER}/std_{file}")
-        summary.to_csv(f"{OUTPUT_FOLDER}/summary_{file}")
-        correlation.to_csv(f"{OUTPUT_FOLDER}/correlation_{file}")
+    # Apply functions
+    mean = calculate_column_mean(df)
+    median = calculate_column_median(df)
+    std_dev = calculate_column_std_dev(df)
+    summary = generate_statistical_summary(df)
+    correlation = correlation_analysis(df)
 
-print("CSV files processed successfully.")
+    # Save output
+    output_file = os.path.join(OUTPUT_FOLDER, f"{name}_results.txt")
+
+    with open(output_file, "w") as f:
+        f.write("=== MEAN ===\n")
+        f.write(str(mean) + "\n\n")
+
+        f.write("=== MEDIAN ===\n")
+        f.write(str(median) + "\n\n")
+
+        f.write("=== STD DEV ===\n")
+        f.write(str(std_dev) + "\n\n")
+
+        f.write("=== SUMMARY ===\n")
+        f.write(str(summary) + "\n\n")
+
+        f.write("=== CORRELATION ===\n")
+        f.write(str(correlation) + "\n\n")
+
+    print(f"Processed: {filename}")
+
+
+def main():
+    if not os.path.exists(OUTPUT_FOLDER):
+        os.makedirs(OUTPUT_FOLDER)
+
+    for file in os.listdir(INPUT_FOLDER):
+        if file.endswith(".csv"):
+            process_csv(os.path.join(INPUT_FOLDER, file))
+
+
+if __name__ == "__main__":
+    main()
