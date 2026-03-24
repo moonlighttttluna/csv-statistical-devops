@@ -12,24 +12,26 @@ OUTPUT_FOLDER = "output"
 # Create output folder if it does not exist
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
+# Loop through all CSV files in input folder
 for file in os.listdir(INPUT_FOLDER):
     if file.endswith(".csv"):
         file_path = os.path.join(INPUT_FOLDER, file)
-        # ✅ Read CSV here
+
+        # Read CSV into DataFrame
         df = pd.read_csv(file_path)
 
-        # ✅ Pass DataFrame to processors
+        # Pass DataFrame to processor functions
         mean = calculate_column_mean(df)
         median = calculate_column_median(df)
         std_dev = calculate_column_std_dev(df)
         summary = generate_statistical_summary(df)
         correlation = correlation_analysis(df)
 
-        # Save results
-        mean.to_csv(os.path.join(OUTPUT_FOLDER, f"mean_{file}"))
-        median.to_csv(os.path.join(OUTPUT_FOLDER, f"median_{file}"))
-        std_dev.to_csv(os.path.join(OUTPUT_FOLDER, f"std_{file}"))
-        summary.to_csv(os.path.join(OUTPUT_FOLDER, f"summary_{file}"))
-        correlation.to_csv(os.path.join(OUTPUT_FOLDER, f"correlation_{file}"))
+        # Save results to output folder
+        mean.to_csv(os.path.join(OUTPUT_FOLDER, f"mean_{file}"), index=False)
+        median.to_csv(os.path.join(OUTPUT_FOLDER, f"median_{file}"), index=False)
+        std_dev.to_csv(os.path.join(OUTPUT_FOLDER, f"std_{file}"), index=False)
+        summary.to_csv(os.path.join(OUTPUT_FOLDER, f"summary_{file}"), index=False)
+        correlation.to_csv(os.path.join(OUTPUT_FOLDER, f"correlation_{file}"), index=False)
 
 print("CSV files processed successfully.")
