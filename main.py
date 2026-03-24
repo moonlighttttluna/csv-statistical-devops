@@ -1,30 +1,52 @@
 import os
 import pandas as pd
-from processors.calculate_column_mean import calculate_column_mean
-from processors.calculate_column_median import calculate_column_median
-from processors.calculate_column_std_dev import calculate_column_std_dev
-from processors.generate_statistical_summary import generate_statistical_summary
-from processors.correlation_analysis import correlation_analysis
+import logging
+from processors import (
+    calculate_column_mean,
+    calculate_column_median,
+    calculate_column_std_dev,
+    generate_statistical_summary,
+    correlation_analysis
+)
 
+# Configuration
 INPUT_FOLDER = "input"
 OUTPUT_FOLDER = "output"
-os.makedirs(OUTPUT_FOLDER, exist_ok=True)
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
-for file in os.listdir(INPUT_FOLDER):
-    if file.endswith(".csv"):
+def main():
+    os.makedirs(OUTPUT_FOLDER, exist_ok=True)
+    
+    files = [f for f in os.listdir(INPUT_FOLDER) if f.endswith(".csv")]
+    
+    if not files:
+        logging.warning(f"No CSV files found in {INPUT_FOLDER}")
+        return
+
+    for file in files:
         file_path = os.path.join(INPUT_FOLDER, file)
-        df = pd.read_csv(file_path)  # Only here, no pd.read_csv in processors
+        try:
+            logging.info(f"Processing: {file}")
+            df = pd.read_csv(file_path)
 
-        mean = calculate_column_mean(df)
-        median = calculate_column_median(df)
-        std_dev = calculate_column_std_dev(df)
-        summary = generate_statistical_summary(df)
-        correlation = correlation_analysis(df)
+            # Map operations to their functions
+            tasks = {
+                "mean": calculate_column_mean,
+                "median": calculate_column_median,
+                "std": calculate_column_std_dev,
+                "summary": generate_statistical_summary,
+                "correlation": correlation_analysis
+            }
 
-        mean.to_csv(os.path.join(OUTPUT_FOLDER, f"mean_{file}"), index=True)
-        median.to_csv(os.path.join(OUTPUT_FOLDER, f"median_{file}"), index=True)
-        std_dev.to_csv(os.path.join(OUTPUT_FOLDER, f"std_{file}"), index=True)
-        summary.to_csv(os.path.join(OUTPUT_FOLDER, f"summary_{file}"), index=True)
-        correlation.to_csv(os.path.join(OUTPUT_FOLDER, f"correlation_{file}"), index=True)
+            for prefix, func in tasks.items():
+                result = func(df)
+                output_name = f"{prefix}_{file}"
+                result.to_csv(os.path.join(OUTPUT_FOLDER, output_name))
+            
+            logging.info(f"Successfully processed {file}")
 
-print("CSV files processed successfully.")
+        except Exception as e:
+            logging.error(f"Error processing {file}: {e}")
+
+if __name__ == "__main__":
+    main()
