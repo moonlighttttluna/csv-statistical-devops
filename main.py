@@ -12,7 +12,7 @@ OUTPUT_FOLDER = "output"
 
 
 def process_csv(file_path):
-    filename = os.path.basename(file_path)
+    df = pd.read_csv(csv_file)
     name, _ = os.path.splitext(filename)
 
     df = pd.read_csv(file_path)
