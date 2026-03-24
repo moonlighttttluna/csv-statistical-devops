@@ -11,7 +11,6 @@ from processors import (
 # 1. Import the new visualization processor
 from processors.generate_visualizations import generate_visualizations
 
-# Configuration
 INPUT_FOLDER = "input"
 OUTPUT_FOLDER = "output"
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
@@ -62,3 +61,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
