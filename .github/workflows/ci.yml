@@ -22,6 +22,11 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run Tests
+        run: |
+          pytest tests/ --maxfail=1 --disable-warnings -q
 
       - name: Run Main Script
         run: |
