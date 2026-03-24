@@ -19,6 +19,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Run Tests with Pytest
-      run: |
-        pytest
+    - name: Run Tests
+      run: pytest
+
+    - name: Run Main Pipeline
+      run: python main.py
+
+    - name: Archive Production Artifacts
+    # This step saves your output folder so you can download it!
+      uses: actions/upload-artifact@v4
+      with:
+        name: processed-data
+        path: output/
