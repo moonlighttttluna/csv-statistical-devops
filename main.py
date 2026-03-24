@@ -8,26 +8,19 @@ from processors.correlation_analysis import correlation_analysis
 
 INPUT_FOLDER = "input"
 OUTPUT_FOLDER = "output"
-
-# Create output folder if it does not exist
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
-# Loop through all CSV files in input folder
 for file in os.listdir(INPUT_FOLDER):
     if file.endswith(".csv"):
         file_path = os.path.join(INPUT_FOLDER, file)
+        df = pd.read_csv(file_path)  # Only here, no pd.read_csv in processors
 
-        # Read CSV into DataFrame
-        df = pd.read_csv(file_path)
-
-        # Pass DataFrame to processor functions
         mean = calculate_column_mean(df)
         median = calculate_column_median(df)
         std_dev = calculate_column_std_dev(df)
         summary = generate_statistical_summary(df)
         correlation = correlation_analysis(df)
 
-        # Save results to output folder
         mean.to_csv(os.path.join(OUTPUT_FOLDER, f"mean_{file}"), index=True)
         median.to_csv(os.path.join(OUTPUT_FOLDER, f"median_{file}"), index=True)
         std_dev.to_csv(os.path.join(OUTPUT_FOLDER, f"std_{file}"), index=True)
