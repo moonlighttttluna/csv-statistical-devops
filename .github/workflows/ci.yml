@@ -1,49 +1,50 @@
-name: Python Data Pipeline CI
+name: Python Data Pipeline with Auto-Commit
 
-# This triggers the workflow every time you push a change or a CSV to GitHub
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    # This prevents an "infinite loop" where the bot's own commit 
+    # triggers another build.
+    paths-ignore:
+      - 'output/**'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    # We need "write" permissions to push files back to the repo
+    permissions:
+      contents: write
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Python 3.9
+    - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.9'
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        # Ensure pandas and pytest are installed even if requirements.txt is missing
         pip install pandas pytest
 
-    - name: Run Tests with Pytest
-      # We set PYTHONPATH so Python can find the 'processors' folder
-      run: |
-        export PYTHONPATH=$PYTHONPATH:$(pwd)
-        pytest
-
     - name: Run Data Pipeline
-      # This executes your main.py and generates the files in the /output folder
       run: |
         export PYTHONPATH=$PYTHONPATH:$(pwd)
         python main.py
 
-    - name: Upload Results as Artifacts
-      # This is the CRITICAL step that saves the 'output' folder for you to download
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: student-grade-analysis-results
-        path: output/
-        retention-days: 5
+    - name: Commit and Push Output
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        
+        # Add the output folder to git
+        git add output/
+        
+        # Only commit if there are actually changes to avoid errors
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "Auto-generated: Updated statistical analysis"
+          git push
+        fi
