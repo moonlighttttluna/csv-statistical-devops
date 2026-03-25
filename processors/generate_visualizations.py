@@ -2,18 +2,18 @@ import matplotlib.pyplot as plt
 import os
 
 def generate_visualizations(df, output_folder, filename):
-    # Use the first column as the index (the labels for the bars)
+    
     first_col = df.columns[0]
     plot_df = df.set_index(first_col)
     
-    # Select only numeric data for the chart
+   
     numeric_df = plot_df.select_dtypes(include=['number'])
     
     if numeric_df.empty:
         print(f"No numeric data found in {filename} to plot.")
         return
 
-    # Create the plot
+    
     plt.figure(figsize=(12, 6))
     numeric_df.plot(kind='bar', ax=plt.gca())
     
@@ -25,7 +25,7 @@ def generate_visualizations(df, output_folder, filename):
     plt.grid(axis='y', linestyle='--', alpha=0.6)
     plt.tight_layout()
     
-    # Save the image
+   
     image_name = filename.replace('.csv', '.png')
     plt.savefig(os.path.join(output_folder, image_name))
     plt.close()
