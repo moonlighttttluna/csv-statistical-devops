@@ -2,9 +2,9 @@
 
 ## 📌 Project Overview
 
-This project is an automated CSV processing system that performs statistical analysis on datasets using Python. It integrates DevOps practices such as Continuous Integration (CI), automated testing, and version control.
+This project is an Automated Data Science Pipeline that performs complex statistical analysis and data visualization on CSV datasets. It is built as a DevOps Showcase, integrating Continuous Integration (CI) and automated quality gates to ensure data integrity.
 
-The system reads CSV files from the `input` folder, processes them using statistical functions, and generates output files automatically in the `output` folder.
+The system monitors the input/ folder, detects new datasets, executes a suite of mathematical processors, and generates both tabular reports (CSV) and graphical insights (PNG) in the `output/` folder.
 
 ---
 
