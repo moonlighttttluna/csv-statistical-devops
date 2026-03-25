@@ -93,11 +93,11 @@ Look in the output/ folder for your new statistical CSVs and the .png visualizat
 ---
 
 ### 4. Run Tests
-
+```
 Bash
 export PYTHONPATH=$PYTHONPATH:$(pwd)
 pytest -v
-
+```
 
 
 ---
