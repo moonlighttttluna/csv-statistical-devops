@@ -168,7 +168,7 @@ A green check mark in GitHub Actions indicates a successful run.
 * Numeric columns are automatically detected using:
 
   ```
-  df.select_dtypes(include='number')
+  df.select_dtypes(include=['number'])
   ```
 * Statistical computations are applied
 * Results are exported as CSV files
