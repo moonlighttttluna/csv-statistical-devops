@@ -17,8 +17,6 @@ The system monitors the input/ folder, detects new datasets, executes a suite of
   * Mean, Median, & Std Dev: Core central tendency and dispersion metrics.
   * Statistical Summary: Full descriptive statistics (count, min, max, percentiles).
   * Correlation Analysis: Matrix showing how variables relate to one another.
-  * Statistical Summary
-  * Correlation Analysis
   * Automated Visualization: Dynamically generates Bar Charts for every processed dataset, identifying numeric columns automatically.
   * DevOps Ready: Integrated GitHub Actions pipeline for automated testing and "Zero-Touch" updates.
 
@@ -104,108 +102,40 @@ pytest -v
 
 ---
 
-## 🔄 DevOps Workflow
+## 🔄 DevOps Workflow (CI/CD)
 
-1. Write code and test locally
-2. Commit changes using Git
-3. Push to GitHub repository
-4. GitHub Actions CI pipeline runs automatically
-5. Tests are executed using PyTest
-6. Build is marked as success (✔) or failure (❌)
-
----
-
-## ⚙️ CI Pipeline (GitHub Actions)
-
-The CI pipeline automatically performs:
-
-* Setup Python environment
-* Install dependencies
-* Run PyTest
-* Validate project functionality
-
-A green check mark in GitHub Actions indicates a successful run.
+1. Local Dev: Write code or add data locally.
+2. Push: Commit changes to GitHub.
+3. CI Trigger: GitHub Actions starts an Ubuntu runner.
+4. Test Phase: Pytest validates that the math logic (Mean, Median, etc.) is still 100% accurate.
+5. Process Phase: main.py runs, generating the stats and charts.
+6. Deploy: The GitHub Action Bot automatically commits the new output/ files back to your repository.
 
 ---
 
 ## 🧪 Testing Strategy
 
-* Each function has a dedicated test file
-* Tests validate correctness of statistical outputs
-* PyTest automatically executes all test cases
-* Ensures reliability and error detection
+We utilize a Modular Testing Strategy. Each statistical function is isolated and tested against "Known Good" data. If a function is modified and the math becomes incorrect, the CI Pipeline will fail (❌) and block the update to the output folder, protecting the integrity of your data.
+
 
 ---
 
-## 📊 CSV Processing Techniques
+## 📈 Example Visualization
 
-* CSV files are read using Pandas
-* Data is converted into DataFrames
-* Numeric columns are automatically detected using:
-
-  ```
-  df.select_dtypes(include=['number'])
-  ```
-* Statistical computations are applied
-* Results are exported as CSV files
-
----
-
-## 👥 Group Roles
-
-### Data Processing Lead
-
-Designs and implements CSV processing algorithms.
-
-### DevOps Engineer
-
-Configures GitHub Actions CI pipeline and automation.
-
-### Tester
-
-Develops and validates PyTest test cases.
-
-### Documenter / Presenter
-
-Prepares README and presentation materials.
-
----
-
-## 📈 Example Input
-
-```
-Name,Math,Science,English
-Melvin,85,75,76
-Maddie,90,85,80
-Dani,70,88,95
-Lisa,80,75,72
-```
-
----
-
-## 📁 Example Output Files
-
-```
-mean_grades.csv
-median_grades.csv
-std_grades.csv
-summary_grades.csv
-correlation_grades.csv
-```
+The system automatically identifies the best "Label" column (like Name or ID) and creates charts for all numeric columns:
 
 ---
 
 ## 🎯 DevOps Concepts Applied
 
-* Continuous Integration (CI)
-* Automation
-* Testing
-* Version Control
+* Continuous Integration (CI): Automated testing on every push.
+* Infrastructure as Code (IaC): Using YAML to define the build environment.
+* Automated Visualization: Removing the manual step of creating reports.
+* Version Control: Complete history of data changes and code updates.
+
 
 ---
 
-## ✅ Conclusion
-
-This project demonstrates how DevOps practices can be applied to automate data processing systems. By integrating Python, automated testing, and CI pipelines, the system ensures reliability, scalability, and efficiency.
+## ✅Developed by the CSV Statistical DevOps Team
 
 ---
