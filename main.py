@@ -8,7 +8,7 @@ from processors import (
     generate_statistical_summary,
     correlation_analysis
 )
-# 1. Import the new visualization processor
+
 from processors.generate_visualizations import generate_visualizations
 
 INPUT_FOLDER = "input"
@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 def main():
     os.makedirs(OUTPUT_FOLDER, exist_ok=True)
     
-    # Ensure the input folder exists to avoid errors
+   
     if not os.path.exists(INPUT_FOLDER):
         os.makedirs(INPUT_FOLDER)
         logging.warning(f"Created missing folder: {INPUT_FOLDER}")
@@ -35,7 +35,7 @@ def main():
             logging.info(f"Processing: {file}")
             df = pd.read_csv(file_path)
 
-            # Map operations to their functions
+            
             tasks = {
                 "mean": calculate_column_mean,
                 "median": calculate_column_median,
@@ -44,14 +44,14 @@ def main():
                 "correlation": correlation_analysis
             }
 
-            # Run all statistical tasks
+            
             for prefix, func in tasks.items():
                 result = func(df)
                 output_name = f"{prefix}_{file}"
                 result.to_csv(os.path.join(OUTPUT_FOLDER, output_name))
             
-            # 2. Run the Visualization task
-            # We pass 'file' so the PNG name matches the CSV name
+            
+            
             generate_visualizations(df, OUTPUT_FOLDER, file)
             
             logging.info(f"Successfully processed {file} and generated chart.")
